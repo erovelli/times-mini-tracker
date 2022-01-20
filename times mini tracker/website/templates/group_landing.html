@@ -1,0 +1,52 @@
+{% extends "base.html" %} {% block title %}Group Landing{% endblock %} {% block
+content %}
+
+<div class="jumbotron">
+  <h1 class="display-4">Welcome to Time's mini tracker groups!</h1>
+  <p class="lead">
+    This is the Time's mini group tracker to compete against your peers!
+  </p>
+  <hr class="my-4" />
+  <p>
+    To join a group, enter a group key below, or select the "Create" button to
+    crate your own
+  </p>
+
+  <form method="POST">
+    <div class="container">
+      <div class="row row-cols-2">
+        <div class="col">Join Group</div>
+        <div class="col">Create Group</div>
+        <div class="col">
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              name="group_key"
+              id="group_key"
+              class="form-control"
+              placeholder="enter key"
+              aria-label="enter key"
+              aria-describedby="button-addon2"
+            />
+
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="submit" id="button-addon2">
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg"
+          name="create"
+          value="create"
+        >
+          Create Group
+        </button>
+      </div>
+    </div>
+  </form>
+
+  {% endblock %}
+</div>

@@ -1,0 +1,74 @@
+{% extends "base.html" %} {% block title %}Group{% endblock %} {% block content
+%}
+<h1 align="center">Group - {{ group.key }}</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <div class="card">
+        <h5 class="card-header">{{ user.first_name }}</h5>
+        <div class="card-body py-md-0">
+        
+          <p class="card-text">
+            <div class="row">
+                <div class="col">Min: <br> {{ user.min | string + "s" }}</div>
+                <div class="col">Mean: <br> {{ user.avg_time | string + "s" }}</div>
+                <div class="col">Max: <br> {{ user.max | string + "s" }}</div>
+              </div></p>
+        </div>
+      </div>
+
+      <table class="table" id="entries">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Time</th>
+            <th></th>
+          </tr>
+        </thead>
+        {% for entry in user.entries %}
+        <tbody>
+          <tr>
+            <td>{{ entry.mini_date }}</td>
+            <td>{{ entry.data | string + "s" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    
+    {% for userx in group.users %} {% if userx != user %}
+    <div class="col-sm">
+      <div class="card">
+        <h5 class="card-header">{{ userx.username }}</h5>
+        <div class="card-body py-md-0">
+          <p class="card-text">
+            <div class="row">
+                <div class="col">Min: <br> {{ userx.min | string + "s" }}</div>
+                <div class="col">Mean: <br> {{ userx.avg_time | string + "s" }}</div>
+                <div class="col">Max: <br> {{ userx.max | string + "s" }}</div>
+              </div></p>
+        </div>
+      </div>
+      <table class="table" id="entries">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Time</th>
+            <th></th>
+          </tr>
+        </thead>
+        {% for entry in userx.entries %}
+        <tbody>
+          <tr>
+            <td>{{ entry.mini_date }}</td>
+            <td>{{ entry.data | string + "s" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}{% endfor %}
+  </div>
+      </div>
+</div>
+{% endblock %}
