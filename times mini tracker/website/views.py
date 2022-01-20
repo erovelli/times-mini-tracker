@@ -24,18 +24,18 @@ def home():
             flash('Enter date of mini', category='error')
         else:
             test_in = False
-            for item in current_user.entries: # prevent repeat entrys
+            for item in current_user.entries:  # prevent repeat entrys
                 if date == item.mini_date:
                     test_in = True
             if not test_in:
                 try:
                     entry = float(entry)
                     new_entry = Entry(data=entry, mini_date=date,
-                                    user_id=current_user.id)
+                                      user_id=current_user.id)
                     db.session.add(new_entry)
                     db.session.commit()
-                    stat_update()
-                    
+                    stat_update(user=current_user)
+
                     flash('Time added!', category='success')
                 except:
                     flash('Enter a real number!', category='error')
@@ -53,11 +53,9 @@ def group():
     group = Group.query.filter_by(id=current_user.group_id).first()
 
     for user in group.users:
-        print(user.username,user.min,user.id)
-        
+        print(user.username, user.min, user.id)
 
     return render_template("group.html", user=current_user, group=group)
-
 
 
 @views.route('/delete-entry', methods=['POST'])
@@ -72,14 +70,14 @@ def delete_entry():
             db.session.delete(entry)
             db.session.commit()
 
-    stat_update()
+    stat_update(user=current_user)
     return jsonify({})
 
 
-def stat_update():
-    if len(current_user.entries)>0:
-        sum=0
-        min=max=current_user.entries[0].data
+def stat_update(user):
+    if len(current_user.entries) > 0:
+        sum = 0
+        min = max = current_user.entries[0].data
         for entry in current_user.entries:
             sum += entry.data
             if entry.data < min:
@@ -87,13 +85,12 @@ def stat_update():
             if entry.data > max:
                 max = entry.data
         avg = round(sum/len(current_user.entries), 2)
-        
 
-        db.session.query(User).update(
+        db.session.query(User).filter_by(id=user.id).update(
             {User.avg_time: avg}, synchronize_session=False)
-        db.session.query(User).update(
+        db.session.query(User).filter_by(id=user.id).update(
             {User.min: min}, synchronize_session=False)
-        db.session.query(User).update(
+        db.session.query(User).filter_by(id=user.id).update(
             {User.max: max}, synchronize_session=False)
-            
+
         db.session.commit()
